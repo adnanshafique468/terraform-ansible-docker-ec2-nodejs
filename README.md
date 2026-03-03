@@ -1,144 +1,99 @@
-# Terraform + Ansible + Docker + EC2 Node.js Deployment
+🚀 AWS EC2 Node.js Deployment
+Terraform + Ansible + Docker
 
-A professional DevOps workflow demonstrating **automated deployment** of a Node.js application on AWS EC2 using **Terraform, Ansible, and Docker**.
+This project demonstrates an automated DevOps workflow to deploy a containerized Node.js application on AWS EC2 using:
 
----
+Terraform – Infrastructure provisioning
 
-## 📂 Project Structure
+Ansible – Server configuration
+
+Docker – Application containerization
+
+📁 Project Structure
 terraform-ansible-docker-ec2-nodejs/
-├─ terraform/
-│ ├─ main.tf
-│ ├─ variables.tf
-│ └─ outputs.tf
-├─ ansible/
-│ ├─ playbook.yml
-│ ├─ inventory.ini # Ignored in git for security
-│ └─ files/ # Extra files if needed
-├─ app/
-│ ├─ Dockerfile
-│ ├─ .dockerignore
-│ ├─ package.json
-│ ├─ package-lock.json
-│ ├─ server.js
-│ └─ node_modules/ # Ignored in git
-├─ .gitignore
-└─ README.md
+│
+├── terraform/        # EC2 infrastructure provisioning
+├── ansible/          # Server configuration & deployment
+├── app/              # Node.js application (Dockerized)
+│
+├── .gitignore
+└── README.md
+⚙️ Workflow Overview
+1️⃣ Infrastructure Provisioning
 
+Terraform creates:
 
----
+EC2 Instance
 
-## ⚙️ Prerequisites
+Security Group
 
-- AWS account with access keys
-- Terraform installed
-- Ansible installed
-- Docker installed (or will be installed via Ansible)
-- SSH key for EC2 instance
+Key Pair configuration
 
----
+2️⃣ Server Configuration
 
-## 🚀 Deployment Steps
+Ansible performs:
 
-### 1. Provision EC2 with Terraform
+System update
 
-```bash
+Docker installation
+
+Application deployment
+
+3️⃣ Application Deployment
+
+Docker:
+
+Builds image from Dockerfile
+
+Runs container on port 3000
+
+🚀 How to Deploy
+Step 1 – Provision EC2
 cd terraform
 terraform init
 terraform apply
-
-After apply, note the public IP from Terraform outputs.
-
-2. Deploy App with Ansible
+Step 2 – Deploy Application
 cd ../ansible
 ansible-playbook -i inventory.ini playbook.yml
-
-This playbook will:
-
-Update the server packages
-
-Install Docker
-
-Copy the Node.js app
-
-Build the Docker image
-
-Run the Docker container on port 3000
-
-3. Verify Deployment
-
-Open your browser and visit:
-
+Step 3 – Access Application
 http://<EC2_PUBLIC_IP>:3000
+🔒 Security Notes
 
-You should see the Node.js application running.
+The following are ignored via .gitignore:
 
-📝 Important Notes
+*.pem (SSH keys)
 
-Dockerfile must be capitalized (Dockerfile)
+*.tfstate
 
-.dockerignore should include node_modules to speed up builds
+.terraform/
 
-Avoid nested app folders to prevent Docker build errors
+node_modules/
 
-Direct Ubuntu deployment is faster and more reliable than Windows/WSL setups
+inventory.ini
 
-For repeated deployments, ensure folder structure matches exactly
+Sensitive files are never pushed to GitHub.
 
-🔧 Optional Docker Commands
+✅ Key Achievements
 
-Check running containers:
+✔ Infrastructure as Code (IaC)
+✔ Automated Docker installation
+✔ Containerized Node.js deployment
+✔ Repeatable cloud deployment workflow
 
-docker ps
+📌 Tech Stack
 
-Stop a container:
+AWS EC2
 
-docker stop myapp_container
+Terraform
 
-Remove a container:
+Ansible
 
-docker rm myapp_container
+Docker
 
-Remove Docker image:
+Node.js
+👨‍💻 Author
 
-docker rmi myapp
-
-View container logs:
-
-docker logs myapp_container
-✅ Key Learnings
-
-Hands-on DevOps workflow: Terraform + Ansible + Docker
-
-Automated server provisioning and app deployment
-
-Containerized Node.js application
-
-Handling common deployment issues: paths, permissions, Docker build
-
-👤 Author
+Adnan Shafiq
+👨‍💻 Author
 
 Your Name
-
-
----
-
-Bhai, ye **professional GitHub-ready README.md** hai:  
-
-- Clean sections ✅  
-- Clear folder structure ✅  
-- Deployment instructions ✅  
-- Optional commands + notes ✅  
-- Market-ready professional look ✅  
-
-Tum simply **root folder** me `README.md` save kar do aur GitHub me push kar do.  
-
-Agar chaho, mai ab tumhare liye **final GitHub push-ready repo** ready kar doon jisme:  
-
-- Correct `.gitignore`  
-- `README.md`  
-- Terraform / Ansible / app folders  
-- Node.js Docker setup  
-
-Ek hi push me deploy ready ho jaye.  
-
-Chahoge mai wo ready kar doon?
