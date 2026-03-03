@@ -1,0 +1,377 @@
+# - name: Setup Docker and Run App
+#   hosts: aws
+#   become: true
+
+#   tasks:
+#     - name: Install Docker
+#       apt:
+#         name: docker.io
+#         state: present
+#         update_cache: yes
+
+#     - name: Start Docker
+#       service:
+#         name: docker
+#         state: started
+#         enabled: yes
+
+#     - name: Copy app to server
+#       copy:
+#         src: ../app/
+#         dest: /home/ubuntu/app/
+
+#     - name: Build Docker Image
+#       command: docker build -t devops-app /home/ubuntu/app/
+
+#     - name: Run Docker Container
+#       command: docker run -d -p 3000:3000 devops-app
+
+# - name: Setup Docker and Deploy App
+#   hosts: aws
+#   become: true
+
+#   tasks:
+#     - name: Update apt cache
+#       apt:
+#         update_cache: yes
+
+#     - name: Install Docker
+#       apt:
+#         name: docker.io
+#         state: present
+
+#     - name: Ensure Docker service is running
+#       service:
+#         name: docker
+#         state: started
+#         enabled: yes
+        
+
+#     - name: Copy app folder as zip to server
+#       copy:
+#         src: /mnt/c/Users/Adnan/Desktop/ansible+docker+terraform+ec2/app.zip
+#         dest: /home/ubuntu/app.zip
+
+#     - name: Unarchive app on server
+#       unarchive:
+#         src: /home/ubuntu/app.zip
+#         dest: /home/ubuntu/app/
+#         remote_src: yes
+
+#     - name: Build Docker image
+#       docker_image:
+#         name: myapp
+#         build:
+#           path: /home/ubuntu/app/
+#         state: present
+
+#     - name: Run Docker container
+#       docker_container:
+#         name: myapp_container
+#         image: myapp
+#         state: started
+#         restart_policy: always
+#         ports:
+#           - "3000:3000"
+
+
+# - name: Setup Docker and Deploy App
+#   hosts: aws
+#   become: true
+
+#   tasks:
+#     - name: Update apt cache
+#       apt:
+#         update_cache: yes
+
+#     - name: Install Docker
+#       apt:
+#         name: docker.io
+#         state: present
+
+#     - name: Ensure Docker service is running
+#       service:
+#         name: docker
+#         state: started
+#         enabled: yes
+
+#     - name: Ensure unzip is installed
+#       apt:
+#         name: unzip
+#         state: present
+
+#     - name: Copy app zip to server
+#       copy:
+#         src: /mnt/c/Users/Adnan/Desktop/ansible+docker+terraform+ec2/app.zip
+#         dest: /home/ubuntu/app.zip
+
+#     - name: Unarchive app on server
+#       unarchive:
+#         src: /home/ubuntu/app.zip
+#         dest: /home/ubuntu/app/
+#         remote_src: yes
+
+#     - name: Build Docker image
+#       docker_image:
+#         name: myapp
+#         build:
+#           path: /home/ubuntu/app/
+#         state: present
+
+#     - name: Run Docker container
+#       docker_container:
+#         name: myapp_container
+#         image: myapp
+#         state: started
+#         restart_policy: always
+#         ports:
+#           - "3000:3000"
+
+# - hosts: aws
+#   become: true
+#   tasks:
+
+#     - name: Update apt cache
+#       apt:
+#         update_cache: yes
+
+#     - name: Install Docker
+#       apt:
+#         name: docker.io
+#         state: present
+
+#     - name: Ensure Docker service is running
+#       service:
+#         name: docker
+#         state: started
+#         enabled: yes
+
+#     - name: Copy app.zip to server
+#       copy:
+#         src: ../app.zip
+#         dest: /home/ubuntu/app.zip
+#         mode: '0644'
+
+#     - name: Remove old nested app folder if exists
+#       file:
+#         path: /home/ubuntu/app/app
+#         state: absent
+
+#     - name: Unarchive app on server
+#       unarchive:
+#         src: /home/ubuntu/app.zip
+#         dest: /home/ubuntu/
+#         remote_src: yes
+#         copy: no
+
+#     - name: Set ownership for ubuntu user
+#       file:
+#         path: /home/ubuntu/app
+#         state: directory
+#         recurse: yes
+#         owner: ubuntu
+#         group: ubuntu
+
+#     - name: Build Docker image
+#       community.docker.docker_image:
+#         name: myapp
+#         build:
+#           path: /home/ubuntu/app/
+#           dockerfile: /home/ubuntu/app/Dockerfile
+#         state: present
+
+#     - name: Run Docker container
+#       community.docker.docker_container:
+#         name: myapp_container
+#         image: myapp
+#         state: started
+#         ports:
+#           - "3000:3000"
+
+# ---
+# - hosts: aws
+#   become: true
+#   tasks:
+
+#     # 1️⃣ Update apt cache
+#     - name: Update apt cache
+#       apt:
+#         update_cache: yes
+
+#     # 2️⃣ Install Docker
+#     - name: Install Docker
+#       apt:
+#         name: docker.io
+#         state: present
+
+#     # 3️⃣ Ensure Docker service is running
+#     - name: Ensure Docker service is running
+#       service:
+#         name: docker
+#         state: started
+#         enabled: yes
+
+#     # 4️⃣ Copy app.zip to remote server
+#     - name: Copy app.zip to server
+#       copy:
+#         src: ../app.zip        # local controller path
+#         dest: /home/ubuntu/app.zip
+#         mode: '0644'
+
+#     # 5️⃣ Remove old nested app folder if exists
+#     - name: Remove old nested app folder if exists
+#       file:
+#         path: /home/ubuntu/app/app
+#         state: absent
+
+#     # 6️⃣ Unarchive app.zip on remote
+#     - name: Unarchive app on server
+#       unarchive:
+#         src: /home/ubuntu/app.zip
+#         dest: /home/ubuntu/
+#         remote_src: yes        # file already copied in previous task
+
+#     # 7️⃣ Set ownership for ubuntu user
+#     - name: Set ownership for ubuntu user
+#       file:
+#         path: /home/ubuntu/app
+#         state: directory
+#         recurse: yes
+#         owner: ubuntu
+#         group: ubuntu
+
+#     # 8️⃣ Build Docker image
+#     - name: Build Docker image
+#       community.docker.docker_image:
+#         name: myapp
+#         build:
+#           path: /home/ubuntu/app/
+#           dockerfile: /home/ubuntu/app/Dockerfile
+#         state: present
+#       become: true
+
+#     # 9️⃣ Run Docker container
+#     - name: Run Docker container
+#       community.docker.docker_container:
+#         name: myapp_container
+#         image: myapp
+#         state: started
+#         ports:
+#           - "3000:3000"
+
+
+# ---
+# - hosts: aws
+#   become: true
+#   tasks:
+
+#     # 1️⃣ Update apt cache
+#     - name: Update apt cache
+#       apt:
+#         update_cache: yes
+
+#     # 2️⃣ Install Docker
+#     - name: Install Docker
+#       apt:
+#         name: docker.io
+#         state: present
+
+#     # 3️⃣ Ensure Docker service is running
+#     - name: Ensure Docker service is running
+#       service:
+#         name: docker
+#         state: started
+#         enabled: yes
+
+#     # 4️⃣ Remove any old nested app folder & duplicate Dockerfile
+#     - name: Remove old nested app folder
+#       file:
+#         path: /home/ubuntu/app/app
+#         state: absent
+
+#     - name: Remove small-d dockerfile if exists
+#       file:
+#         path: /home/ubuntu/app/dockerfile
+#         state: absent
+
+#     # 5️⃣ Copy zip to remote server
+#     - name: Copy app.zip to server
+#       copy:
+#         src: ../app.zip         # local controller zip
+#         dest: /home/ubuntu/app.zip
+#         mode: '0644'
+
+#     # 6️⃣ Unarchive zip on remote
+#     - name: Unarchive app.zip on server
+#       unarchive:
+#         src: /home/ubuntu/app.zip
+#         dest: /home/ubuntu/
+#         remote_src: yes
+
+#     # 7️⃣ Fix ownership
+#     - name: Set ownership for ubuntu user
+#       file:
+#         path: /home/ubuntu/app
+#         state: directory
+#         recurse: yes
+#         owner: ubuntu
+#         group: ubuntu
+
+#     # 8️⃣ Build Docker image
+#     - name: Build Docker image
+#       community.docker.docker_image:
+#         name: myapp
+#         build:
+#           path: /home/ubuntu/app/
+#           dockerfile: /home/ubuntu/app/Dockerfile
+#         state: present
+
+#     # 9️⃣ Run Docker container
+#     - name: Run Docker container
+#       community.docker.docker_container:
+#         name: myapp_container
+#         image: myapp
+#         state: started
+#         ports:
+#           - "3000:3000"
+
+
+---
+- hosts: aws
+  become: true
+  tasks:
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Copy app folder to server using synchronize
+      ansible.builtin.synchronize:
+        src: ../app/
+        dest: /home/ubuntu/app/
+        recursive: yes
+        delete: yes
+
+    - name: Build Docker image
+      community.docker.docker_image:
+        name: myapp
+        build:
+          path: /home/ubuntu/app/
+          dockerfile: /home/ubuntu/app/Dockerfile
+        state: present
+
+    - name: Run Docker container
+      community.docker.docker_container:
+        name: myapp_container
+        image: myapp
+        state: started
+        ports:
+          - "3000:3000"
